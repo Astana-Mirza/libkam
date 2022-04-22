@@ -21,7 +21,7 @@ Residue::Residue( uint64_t modulo, int64_t value ) noexcept:
 }
 
 
-Residue( const Residue& other ) noexcept:
+Residue::Residue( const Residue& other ) noexcept:
      modulo_{ other.modulo_ }, value_{ other.value_ } {}
 
 

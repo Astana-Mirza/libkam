@@ -293,7 +293,7 @@ Polynom< CoeffType, Compare > Polynom< CoeffType, Compare >::subst
           return *this;
      }
      Polynom< CoeffType, Compare > ret;
-     for ( auto term : terms_ ) {
+     for ( std::pair< Monom, CoeffType > term : terms_ ) {
           size_t deg = term.first.var_deg( var );
           term.first.remove_var( var );
           ret += pow(pol, deg) * Polynom< CoeffType, Compare >{ { { term.first, term.second } } };

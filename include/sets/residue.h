@@ -2,6 +2,7 @@
 #define RESIDUE_H
 
 #include <cstdint>
+#include <cstddef>
 
 class Residue
 {
