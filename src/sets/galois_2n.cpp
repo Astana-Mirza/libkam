@@ -1,14 +1,13 @@
 #include <sets/galois_2n.h>
 #include <stdexcept>
 
-Galois2N::Galois2N( const polynom_type& irreducible ) noexcept:
-     irr_pol_{ irreducible }, basis_coeffs_{ irr_pol_.size() - 1 } {}
-
-
 Galois2N::Galois2N( const polynom_type& irreducible, const polynom_type& coeffs ) noexcept:
      irr_pol_{ irreducible }, basis_coeffs_{ coeffs }
 {
-     basis_coeffs_.resize( irr_pol_.size() - 1 );
+     if ( irr_pol_.any() )
+     {
+          basis_coeffs_.resize( irr_pol_.size() - 1 );
+     }
 }
 
 
