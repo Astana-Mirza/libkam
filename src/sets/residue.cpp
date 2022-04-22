@@ -29,13 +29,22 @@ Residue::Residue( const Residue& other ) noexcept:
 Residue& Residue::operator= ( const Residue& other ) noexcept
 {
      modulo_ = other.modulo_;
-     value_ = other.value_;
+     value_  = other.value_;
      return *this;
 }
 
 
 Residue& Residue::operator+= ( const Residue& other )
 {
+     if ( other )
+     {
+          return *this;
+     }
+     if ( !( *this ) )
+     {
+          *this = other;
+          return *this;
+     }
      if ( modulo_ != other.modulo_ )
      {
           throw std::runtime_error{ "different modulo values" };
@@ -47,39 +56,61 @@ Residue& Residue::operator+= ( const Residue& other )
 
 Residue& Residue::operator-= ( const Residue& other )
 {
+     if ( !other )
+     {
+          return *this;
+     }
+     if ( !( *this ) )
+     {
+          *this = -other;
+          return *this;
+     }
      if ( modulo_ != other.modulo_ )
      {
           throw std::runtime_error{ "different modulo values" };
      }
-     value_ = (value_ + modulo_ - other.value_) % modulo_;
+     value_ = ( value_ + modulo_ - other.value_ ) % modulo_;
      return *this;
 }
 
 
 Residue& Residue::operator*= ( const Residue& other )
 {
+     if ( !other || !( *this ) )
+     {
+          *this = Residue{};
+          return *this;
+     }
      if ( modulo_ != other.modulo_ )
      {
           throw std::runtime_error{ "different modulo values" };
      }
-     value_ = (value_ * other.value_) % modulo_;
+     value_ = ( value_ * other.value_ ) % modulo_;
      return *this;
 }
 
 
 Residue& Residue::operator/= ( const Residue& other )
 {
-     if ( modulo_ != other.modulo_ )
+     if ( !( *this ) )
+     {
+          return *this;
+     }
+     if ( other && modulo_ != other.modulo_ )
      {
           throw std::runtime_error{ "different modulo values" };
      }
-     value_ = (value_ * other.inv().value_) % modulo_;
+     value_ = ( value_ * other.inv().value_ ) % modulo_;
      return *this;
 }
 
 
 Residue Residue::operator- () const
 {
+     if ( !( *this ) )
+     {
+          return *this;
+     }
      Residue ret( modulo_ );
      ret.value_ = (modulo_ - value_) % modulo_;
      return ret;
@@ -88,6 +119,10 @@ Residue Residue::operator- () const
 
 bool Residue::operator== ( const Residue& other ) const
 {
+     if ( !( *this ) && !other )
+     {
+          return true;
+     }
      return modulo_ == other.modulo_ && value_ == other.value_;
 }
 
@@ -100,16 +135,20 @@ bool Residue::operator!= ( const Residue& other ) const
 
 bool Residue::operator< ( const Residue& other ) const
 {
-     if ( modulo_ != other.modulo_ )
-     {
-          throw std::runtime_error{ "different modulo values" };
-     }
-     return value_ < other.value_;
+     return ( *this != other ) && !( *this > other );
 }
 
 
 bool Residue::operator> ( const Residue& other ) const
 {
+     if ( !( *this ) )
+     {
+          return false;
+     }
+     if ( !other )
+     {
+          return true;
+     }
      if ( modulo_ != other.modulo_ )
      {
           throw std::runtime_error{ "different modulo values" };
@@ -120,33 +159,25 @@ bool Residue::operator> ( const Residue& other ) const
 
 bool Residue::operator<= ( const Residue& other ) const
 {
-     if ( modulo_ != other.modulo_ )
-     {
-          throw std::runtime_error{ "different modulo values" };
-     }
-     return value_ <= other.value_;
+     return !( *this > other );
 }
 
 
 bool Residue::operator>= ( const Residue& other ) const
 {
-     if ( modulo_ != other.modulo_ )
-     {
-          throw std::runtime_error{ "different modulo values" };
-     }
-     return value_ >= other.value_;
+     return ( *this == other ) || ( *this > other );
 }
 
 
 Residue::operator bool() const
 {
-     return value_ != 0;
+     return ( value_ != 0 ) && ( modulo_ > 1 );
 }
 
 
 Residue Residue::inv() const
 {
-     if ( value_ == 0 )
+     if ( !( *this ) )
      {
           throw std::runtime_error{ "division by zero" };
      }

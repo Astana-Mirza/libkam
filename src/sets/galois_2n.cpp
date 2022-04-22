@@ -58,6 +58,15 @@ Galois2N& Galois2N::operator= ( Galois2N&& other ) noexcept
 
 Galois2N& Galois2N::operator+= ( const Galois2N& other )
 {
+     if ( !other )
+     {
+          return *this;
+     }
+     if ( !( *this ) )
+     {
+          *this = other;
+          return *this;
+     }
      if ( irr_pol_ != other.irr_pol_ )
      {
           throw std::runtime_error{ "operands are from different fields" };
@@ -75,6 +84,11 @@ Galois2N& Galois2N::operator-= ( const Galois2N& other )
 
 Galois2N& Galois2N::operator*= ( const Galois2N& other )
 {
+     if ( !other || !( *this ) )
+     {
+          *this = Galois2N{};
+          return *this;
+     }
      if ( irr_pol_ != other.irr_pol_ )
      {
           throw std::runtime_error{ "operands are from different fields" };
@@ -89,7 +103,11 @@ Galois2N& Galois2N::operator*= ( const Galois2N& other )
 
 Galois2N& Galois2N::operator/= ( const Galois2N& other )
 {
-     if ( irr_pol_ != other.irr_pol_ )
+     if ( !( *this ) )
+     {
+          return *this;
+     }
+     if ( other && irr_pol_ != other.irr_pol_ )
      {
           throw std::runtime_error{ "operands are from different fields" };
      }
@@ -104,6 +122,10 @@ Galois2N Galois2N::operator- () const {
 
 bool Galois2N::operator== ( const Galois2N& other ) const
 {
+     if ( !( *this ) && !other )
+     {
+          return true;
+     }
      return ( other.irr_pol_ == irr_pol_ ) && ( other.basis_coeffs_ == basis_coeffs_ );
 }
 
@@ -116,6 +138,14 @@ bool Galois2N::operator!= ( const Galois2N& other ) const
 
 bool Galois2N::operator> ( const Galois2N& other ) const
 {
+     if ( !( *this ) )
+     {
+          return false;
+     }
+     if ( !other )
+     {
+          return true;
+     }
      if ( irr_pol_ != other.irr_pol_ )
      {
           throw std::runtime_error{ "operands are from different fields" };
@@ -126,43 +156,31 @@ bool Galois2N::operator> ( const Galois2N& other ) const
 
 bool Galois2N::operator< ( const Galois2N& other ) const
 {
-     if ( irr_pol_ != other.irr_pol_ )
-     {
-          throw std::runtime_error{ "operands are from different fields" };
-     }
-     return basis_coeffs_ < other.basis_coeffs_;
+     return ( *this != other ) && !( *this > other );
 }
 
 
 bool Galois2N::operator>= ( const Galois2N& other ) const
 {
-     if ( irr_pol_ != other.irr_pol_ )
-     {
-          throw std::runtime_error{ "operands are from different fields" };
-     }
-     return basis_coeffs_ >= other.basis_coeffs_;
+     return ( *this == other ) || ( *this > other );
 }
 
 
 bool Galois2N::operator<= ( const Galois2N& other ) const
 {
-     if ( irr_pol_ != other.irr_pol_ )
-     {
-          throw std::runtime_error{ "operands are from different fields" };
-     }
-     return basis_coeffs_ <= other.basis_coeffs_;
+     return !( *this > other );
 }
 
 
 Galois2N::operator bool() const
 {
-     return basis_coeffs_.any();
+     return basis_coeffs_.any() && irr_pol_.any();
 }
 
 
 Galois2N Galois2N::inv() const
 {
-     if ( basis_coeffs_.none() )
+     if ( !( *this ) )
      {
           throw std::runtime_error{ "division by zero" };
      }
@@ -198,7 +216,7 @@ Galois2N Galois2N::inv() const
 // returns power n of primitive element a, so: a^n == *this
 size_t Galois2N::prim_power() const
 {
-     if ( basis_coeffs_.none() )
+     if ( !( *this ) )
      {
           throw std::runtime_error{ "zero is not in multiplicative group" };
      }
