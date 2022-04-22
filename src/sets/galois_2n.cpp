@@ -300,3 +300,13 @@ Galois2N operator+ ( Galois2N a, const Galois2N& b ) { return a += b; }
 Galois2N operator- ( Galois2N a, const Galois2N& b ) { return a += b; }
 Galois2N operator* ( Galois2N a, const Galois2N& b ) { return a *= b; }
 Galois2N operator/ ( Galois2N a, const Galois2N& b ) { return a /= b; }
+
+
+Galois2N pow( const Galois2N& base, size_t exp )
+{
+     if ( !base )
+     {
+          return base;
+     }
+     Galois2N result{ base.irreducible_pol(), base.prim_power() * exp };
+}

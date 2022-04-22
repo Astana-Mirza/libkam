@@ -3,7 +3,8 @@
 #include <stdexcept>
 #include <cmath>
 
-Residue::Residue( uint64_t modulo, int64_t value ) : modulo_{ modulo }
+Residue::Residue( uint64_t modulo, int64_t value ) noexcept:
+     modulo_{ modulo }
 {
      if ( modulo_ <= 1)
      {
@@ -18,6 +19,10 @@ Residue::Residue( uint64_t modulo, int64_t value ) : modulo_{ modulo }
           value_ = modulo_ - ( ( -value ) % modulo_ );
      }
 }
+
+
+Residue( const Residue& other ) noexcept:
+     modulo_{ other.modulo_ }, value_{ other.value_ } {}
 
 
 Residue& Residue::operator= ( const Residue& other ) noexcept
@@ -200,3 +205,18 @@ Residue operator+ ( Residue a, const Residue& b ) { return a += b; }
 Residue operator- ( Residue a, const Residue& b ) { return a -= b; }
 Residue operator* ( Residue a, const Residue& b ) { return a *= b; }
 Residue operator/ ( Residue a, const Residue& b ) { return a /= b; }
+
+
+Residue pow( const Residue& base, size_t exp )
+{
+     if ( !base )
+     {
+          return base;
+     }
+     Residue result{ base.get_modulo(), 1 };
+     for ( size_t i = 0; i < exp; i++ )
+     {
+          result *= base;
+     }
+     return base;
+}

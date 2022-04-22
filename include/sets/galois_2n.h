@@ -9,7 +9,7 @@ class Galois2N
 public:
      using polynom_type = boost::dynamic_bitset<uint64_t>;
 
-     explicit Galois2N( const polynom_type& irreducible ) noexcept;
+     explicit Galois2N( const polynom_type& irreducible = {} ) noexcept;
 	explicit Galois2N( const polynom_type& irreducible, const polynom_type& coeffs ) noexcept;
      explicit Galois2N( const polynom_type& irreducible, size_t power ) noexcept;
      Galois2N( const Galois2N& other ) noexcept;
@@ -52,5 +52,6 @@ Galois2N operator+ ( Galois2N a, const Galois2N& b );
 Galois2N operator- ( Galois2N a, const Galois2N& b );
 Galois2N operator* ( Galois2N a, const Galois2N& b );
 Galois2N operator/ ( Galois2N a, const Galois2N& b );
+Galois2N pow( const Galois2N& base, size_t exp );
 
 #endif // #ifndef GALOIS_2N_H

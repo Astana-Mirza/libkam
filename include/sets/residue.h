@@ -6,7 +6,8 @@
 class Residue
 {
 public:
-     Residue( uint64_t modulo, int64_t value = 0 );
+     Residue( uint64_t modulo = 0, int64_t value = 0 ) noexcept;
+     Residue( const Residue& other ) noexcept;
 
      Residue& operator=  ( const Residue& other ) noexcept;
      Residue& operator+= ( const Residue& other );
@@ -37,5 +38,6 @@ Residue operator+ ( Residue a, const Residue& b );
 Residue operator- ( Residue a, const Residue& b );
 Residue operator* ( Residue a, const Residue& b );
 Residue operator/ ( Residue a, const Residue& b );
+Residue pow( const Residue& base, size_t exp );
 
 #endif // #ifndef RESIDUE_H
