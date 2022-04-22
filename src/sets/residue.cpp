@@ -6,9 +6,10 @@
 Residue::Residue( uint64_t modulo, int64_t value ) noexcept:
      modulo_{ modulo }
 {
-     if ( modulo_ <= 1)
+     if ( modulo_ <= 1 )
      {
-          throw std::runtime_error{ "wrong modulo value" };
+          value_ = 0;
+          return;
      }
      if ( value >= 0 )
      {

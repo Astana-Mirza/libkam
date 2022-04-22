@@ -308,5 +308,5 @@ Galois2N pow( const Galois2N& base, size_t exp )
      {
           return base;
      }
-     Galois2N result{ base.irreducible_pol(), base.prim_power() * exp };
+     return { base.irreducible_pol(), base.prim_power() * exp };
 }
