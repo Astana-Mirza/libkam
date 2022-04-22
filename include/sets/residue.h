@@ -24,6 +24,7 @@ public:
 
      Residue inv() const;
      uint64_t get_modulo() const;
+     uint64_t get_value() const;
      bool is_field() const;
 
 private:

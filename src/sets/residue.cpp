@@ -177,6 +177,12 @@ uint64_t Residue::get_modulo() const
 }
 
 
+uint64_t Residue::get_value() const
+{
+     return value_;
+}
+
+
 bool Residue::is_field() const
 {
      uint64_t end = std::sqrt( modulo_ );
