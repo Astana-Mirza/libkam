@@ -36,7 +36,7 @@ Residue& Residue::operator= ( const Residue& other ) noexcept
 
 Residue& Residue::operator+= ( const Residue& other )
 {
-     if ( other )
+     if ( !other )
      {
           return *this;
      }
