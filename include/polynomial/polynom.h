@@ -175,7 +175,12 @@ Polynom< CoeffType, Compare >& Polynom< CoeffType, Compare >::operator*=
      {
           for ( const auto& other_term : other.terms_ )
           {
-               result.terms_[ this_term.first * other_term.first ] = this_term.second * other_term.second;
+               auto coeff = this_term.first * other_term.first;
+               auto& val = result.terms_[ coeff ] += this_term.second * other_term.second;
+               if ( !val )
+               {
+                    result.terms_.erase( coeff );
+               }
           }
      }
      *this = result;
