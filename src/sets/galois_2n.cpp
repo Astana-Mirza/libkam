@@ -228,10 +228,7 @@ size_t Galois2N::prim_power() const
           coeffs >>= shift_len;
           coeffs ^= irr_pol_;
           shift_len = coeffs.find_first();
-          if ( coeffs.count() > 1 )
-          {
-               power += shift_len;
-          }
+          power += shift_len;
      }
      return power;
 }
