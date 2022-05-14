@@ -18,8 +18,6 @@ public:
      Out step( const In& word );
      const TransFunc& transform_func() const { return transform_; }
      const OutFunc& output_func() const { return output_; }
-     TransFunc& transform_func() { return transform_; }
-     OutFunc& output_func() { return output_; }
 
 protected:
 	State curr_state_;
