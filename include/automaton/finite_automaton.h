@@ -68,8 +68,8 @@ FiniteAutomaton< In, Out, State, TransFunc, OutFunc >::operator =( const FiniteA
 template < typename In, typename Out, typename State, typename TransFunc, typename OutFunc >
 Out FiniteAutomaton< In, Out, State, TransFunc, OutFunc >::step( const In& word )
 {
-	Out ret = output( word, curr_state_ );
-	curr_state_ = transform( word, curr_state_ );
+	Out ret = output_( word, curr_state_ );
+	curr_state_ = transform_( word, curr_state_ );
 	return ret;
 }
 

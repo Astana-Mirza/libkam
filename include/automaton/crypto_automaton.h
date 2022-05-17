@@ -69,8 +69,8 @@ CryptoAutomaton< In, Out, State, TransFunc, OutFunc, KeyType >::operator =( cons
 template < typename In, typename Out, typename State, typename TransFunc, typename OutFunc, typename KeyType >
 Out CryptoAutomaton< In, Out, State, TransFunc, OutFunc, KeyType >::step( const In& word )
 {
-     Out ret = this->output( word, this->curr_state_, this->key_ );
-     this->curr_state_ = this->transform( word, this->curr_state_, this->key_ );
+     Out ret = this->output_( word, this->curr_state_, this->key_ );
+     this->curr_state_ = this->transform_( word, this->curr_state_, this->key_ );
      return ret;
 }
 
